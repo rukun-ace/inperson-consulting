@@ -55,9 +55,10 @@
     if (narrow) {
       // On a phone the logo takes the room that is left under the buttons, never touching them.
       const room = vh - introBottom;
-      d0 = clamp(Math.min(vw * 0.42, (room - 76) / LOGO_H), 72, 190);
+      d0 = clamp(Math.min(vw * 0.42, (room - 96) / LOGO_H), 72, 190);
       startX = vw * 0.5;
-      startY = introBottom + (room - LOGO_H * d0) / 2 + (LOGO_H - 0.5) * d0;
+      // A little more air above the logo than under it.
+      startY = introBottom + (room - LOGO_H * d0) * 0.6 + (LOGO_H - 0.5) * d0;
     } else {
       d0 = clamp(vw * 0.24, 190, 340);
       startX = vw * 0.74;
