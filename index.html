@@ -16,7 +16,11 @@
   <link rel="stylesheet" href="styles.css">
   <meta name="color-scheme" content="light">
   <!-- The opening moves only for visitors who have not asked their device for less motion. -->
-  <script>if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-scene");</script>
+  <script>
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-scene");
+    // A reload starts at the top (or at the section in the address), not at a remembered spot.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -255,20 +259,20 @@
         </ul>
 
         <div class="directory">
-          <section aria-labelledby="c-au"><h3 id="c-au">Australia</h3><ul>
+          <section id="c-au" aria-labelledby="c-au-name"><h3 id="c-au-name">Australia</h3><ul>
             <li><b>Brian Lee Archer</b><span>CEO</span></li></ul></section>
-          <section aria-labelledby="c-be"><h3 id="c-be">Belgium</h3><ul>
+          <section id="c-be" aria-labelledby="c-be-name"><h3 id="c-be-name">Belgium</h3><ul>
             <li><b>Sören Haar</b><span>Managing Partner, European Affairs Consulting Group</span></li></ul></section>
-          <section aria-labelledby="c-cn"><h3 id="c-cn">China</h3><ul>
+          <section id="c-cn" aria-labelledby="c-cn-name"><h3 id="c-cn-name">China</h3><ul>
             <li><b>Andreas Guip</b><span>Managing Director &amp; Co-owner, EW-Link Holding. CEO, Wanox Asia</span></li></ul></section>
-          <section aria-labelledby="c-hr"><h3 id="c-hr">Croatia</h3><ul>
+          <section id="c-hr" aria-labelledby="c-hr-name"><h3 id="c-hr-name">Croatia</h3><ul>
             <li><b>Marina Cvijanovic</b><span>CEO, Eco Bio Croatia</span></li></ul></section>
-          <section aria-labelledby="c-dk"><h3 id="c-dk">Denmark</h3><ul>
+          <section id="c-dk" aria-labelledby="c-dk-name"><h3 id="c-dk-name">Denmark</h3><ul>
             <li><b>Runi Hammer</b><span>CEO / Founder, Meedio</span></li>
             <li><b>Hans Erik Henriksen</b><span>CEO, Epital Health</span></li></ul></section>
-          <section aria-labelledby="c-fr"><h3 id="c-fr">France</h3><ul>
+          <section id="c-fr" aria-labelledby="c-fr-name"><h3 id="c-fr-name">France</h3><ul>
             <li><b>Guillaume Calmon</b><span>CEO / Founder, EHTIC</span></li></ul></section>
-          <section class="directory__wide" aria-labelledby="c-de"><h3 id="c-de">Germany</h3><ul>
+          <section class="directory__wide" id="c-de" aria-labelledby="c-de-name"><h3 id="c-de-name">Germany</h3><ul>
             <li><b>Viviana Plasil</b><span>Managing Director, Buddy Bear Berlin</span></li>
             <li><b>Dr. Daniel Dahm</b><span>CEO / Founder, United Sustainability</span></li>
             <li><b>Dr. Dirk Hamann</b><span>Partner, gunnercooke LLP</span></li>
@@ -287,25 +291,25 @@
             <li><b>Burkhard Brandt</b><span>CEO / Founder, MIG</span></li>
             <li><b>Wolfgang Bonder</b><span>CEO / Co-founder, MIG</span></li>
             <li><b>Dieter Halbfas</b><span>CEO, Wecappsa</span></li></ul></section>
-          <section aria-labelledby="c-lt"><h3 id="c-lt">Lithuania</h3><ul>
+          <section id="c-lt" aria-labelledby="c-lt-name"><h3 id="c-lt-name">Lithuania</h3><ul>
             <li><b>Justina Januševičienė</b><span>CEO, Medici LT</span></li></ul></section>
-          <section aria-labelledby="c-nz"><h3 id="c-nz">New Zealand</h3><ul>
+          <section id="c-nz" aria-labelledby="c-nz-name"><h3 id="c-nz-name">New Zealand</h3><ul>
             <li><b>Chai Chuah</b><span>CEO, Health System Transformation Limited</span></li></ul></section>
-          <section aria-labelledby="c-ro"><h3 id="c-ro">Romania</h3><ul>
+          <section id="c-ro" aria-labelledby="c-ro-name"><h3 id="c-ro-name">Romania</h3><ul>
             <li><b>Bogdan Ionascu</b><span>CEO, Hellimed</span></li></ul></section>
-          <section aria-labelledby="c-rs"><h3 id="c-rs">Serbia</h3><ul>
+          <section id="c-rs" aria-labelledby="c-rs-name"><h3 id="c-rs-name">Serbia</h3><ul>
             <li><b>Ljiljana Urzikic Stankovic</b><span>Managing Partner, Legal Studio</span></li>
             <li><b>Marija Petricevic</b><span>CEO, Kostroma</span></li></ul></section>
-          <section aria-labelledby="c-es"><h3 id="c-es">Spain</h3><ul>
+          <section id="c-es" aria-labelledby="c-es-name"><h3 id="c-es-name">Spain</h3><ul>
             <li><b>Niko Gabrielides</b><span>Partner, BrainersHub</span></li></ul></section>
-          <section aria-labelledby="c-ch"><h3 id="c-ch">Switzerland</h3><ul>
+          <section id="c-ch" aria-labelledby="c-ch-name"><h3 id="c-ch-name">Switzerland</h3><ul>
             <li><b>Martin Fuchs</b><span>CEO, FuchsGroup</span></li>
             <li><b>Valerio Signorelli</b><span>Chief Commercial Officer, Qumea</span></li>
             <li><b>Stephan G. Oehl</b><span>Managing Director, smart2results</span></li></ul></section>
-          <section aria-labelledby="c-tr"><h3 id="c-tr">Türkiye</h3><ul>
+          <section id="c-tr" aria-labelledby="c-tr-name"><h3 id="c-tr-name">Türkiye</h3><ul>
             <li><b>Ülkü Ceylan</b><span>CEO and Founder, Astera</span></li>
             <li><b>Muzaffer Senturk</b><span>Partner, Bodigard. CEO, Himsera</span></li></ul></section>
-          <section aria-labelledby="c-ae"><h3 id="c-ae">United Arab Emirates</h3><ul>
+          <section id="c-ae" aria-labelledby="c-ae-name"><h3 id="c-ae-name">United Arab Emirates</h3><ul>
             <li><b>Mikhail Ivanov</b><span>CEO, Asmimed</span></li></ul></section>
         </div>
       </div>
@@ -334,8 +338,8 @@
     <div class="wrap site-footer__grid">
       <img class="site-footer__logo" src="https://inperson.consulting/wp-content/uploads/2026/03/4.Consulting-1536x1536.png" alt="InPerson Consulting" width="1536" height="1536" loading="lazy" decoding="async">
       <ul>
-        <li><a href="https://inperson.consulting/imprint/">Imprint</a></li>
-        <li><a href="https://inperson.consulting/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="imprint.html">Imprint</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
       </ul>
       <p>© <span id="year">2026</span> InPerson Consulting. All rights reserved.</p>
       <p class="site-footer__credit">Design concept by <a href="https://hooset.org">HOOSET AI</a></p>

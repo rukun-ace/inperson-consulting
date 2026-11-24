@@ -17,6 +17,8 @@
   --sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --gutter: clamp(1.25rem, 5vw, 5rem);
   --section: clamp(5rem, 11vw, 10rem);
+  /* Where a section's first line sits, from the top of the screen, when a link takes you to it. */
+  --land: 7.5rem;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -39,7 +41,12 @@ p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
 b, strong, dt { font-weight: 600; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
-section[id] { scroll-margin-top: 4.5rem; }
+/* A link lands every section the same way: its first line a little under the header. Sections that
+   begin with their own top padding are scrolled past that padding, so the link goes all the way. */
+section[id] { scroll-margin-top: var(--land); }
+#vuca, #about, #alliance, #contact { scroll-margin-top: calc(var(--land) - var(--section)); }
+#top { scroll-margin-top: 0; }
+[tabindex="-1"]:focus { outline: none; }
 
 ::selection { background: var(--orange); color: var(--navy-deep); }
 
@@ -128,6 +135,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 }
 
 @media (max-width: 55rem) {
+  :root { --land: 6.25rem; }
   .site-header { --m: 2.1rem; padding-block: 1rem; }
   .site-header.is-solid { --m: 1.9rem; }
   .menu-button { display: inline-flex; align-items: center; position: relative; z-index: 2; }
@@ -294,8 +302,8 @@ dl.service__more dd { margin: 0; font-size: 1rem; line-height: 1.55; }
 .alliance__countries a { display: inline-block; padding: 0.3rem 0; font-size: 1.0625rem; font-weight: 600; color: var(--navy); text-decoration: none; text-underline-offset: 0.4em; }
 .alliance__countries a:hover { text-decoration: underline; text-decoration-thickness: 1.5px; }
 .directory { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(1.5rem, 4vw, 4rem); }
-.directory section { padding: 1.25rem 0 2rem; border-top: 1px solid var(--line); scroll-margin-top: 6.5rem; }
-.directory section:target { padding-top: calc(1.25rem - 2px); border-top: 3px solid var(--orange); }
+.directory section { padding: 1.25rem 0 2rem; border-top: 1px solid var(--line); scroll-margin-top: var(--land); }
+.directory section.is-target { padding-top: calc(1.25rem - 2px); border-top: 3px solid var(--orange); }
 .directory h3 { margin-bottom: 1rem; font: 600 0.8125rem/1.2 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--navy); }
 .directory ul { display: grid; gap: 0.85rem; margin: 0; padding: 0; list-style: none; }
 .directory li { display: grid; }
@@ -319,6 +327,18 @@ dl.service__more dd { margin: 0; font-size: 1rem; line-height: 1.55; }
 .contact__facts { display: grid; grid-template-columns: repeat(2, max-content); gap: 2rem clamp(2.5rem, 6vw, 6rem); margin: 0; }
 .contact__facts dt { margin-bottom: 0.6rem; font: 600 0.8125rem/1.2 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); }
 .contact__facts dd { margin: 0; }
+
+/* ---------- The legal pages ---------- */
+
+.legal { padding: 11rem 0 var(--section); }
+.legal__text { max-width: 44rem; }
+.legal h1 { margin-bottom: 2.75rem; font: 400 clamp(3rem, 6.6vw, 5.75rem)/1 var(--serif); letter-spacing: -0.015em; color: var(--navy); }
+.legal h2 { margin: 3rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); font: 400 clamp(1.625rem, 2.6vw, 2.125rem)/1.15 var(--serif); color: var(--navy); }
+.legal h3 { margin: 1.75rem 0 0.4rem; font: 600 1.0625rem/1.4 var(--sans); color: var(--navy); }
+.legal address { margin-bottom: 1em; font-style: normal; }
+.legal a { text-underline-offset: 0.3em; overflow-wrap: anywhere; }
+.legal__back { margin-top: 3.5rem; padding-top: 1.75rem; border-top: 1px solid var(--line); }
+@media (max-width: 55rem) { .legal { padding-top: 8.5rem; } }
 
 /* ---------- Footer ---------- */
 
