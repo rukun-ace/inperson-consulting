@@ -1,6 +1,7 @@
 /* InPerson Consulting, design concept.
    His colours (navy, orange and the grey of the logo's bar) on a warm paper white.
-   One typeface for reading (Manrope, already on his site), one for the large lines (Instrument Serif). */
+   Two typefaces and no more: Manrope for reading (already on his site, in two weights, 400 and 600)
+   and Instrument Serif for the large lines. The serif's italic is kept for the quote alone. */
 
 :root {
   --navy: #012b6a;
@@ -36,6 +37,7 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
+b, strong, dt { font-weight: 600; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
 section[id] { scroll-margin-top: 4.5rem; }
 
@@ -111,9 +113,9 @@ section[id] { scroll-margin-top: 4.5rem; }
 .logo__mark { position: relative; flex: none; width: var(--m); height: calc(var(--m) * 1.165); }
 .logo__mark i { position: absolute; left: 0; top: calc(var(--m) * 0.165); width: var(--m); height: var(--m); border-radius: 50%; background: var(--orange); }
 .logo__mark b { position: absolute; left: calc(var(--m) * 0.3465); top: 0; width: calc(var(--m) * 0.307); height: calc(var(--m) * 1.152); border-radius: calc(var(--m) * 0.026); background: var(--grey); }
-.logo__words { flex: none; width: calc(var(--m) * 5.25); height: var(--m); overflow: visible; font-family: "Montserrat", var(--sans); font-weight: 500; }
-.logo__words text:first-child { font-size: 17px; letter-spacing: 0.3em; fill: #01263c; }
-.logo__words text:last-child { font-size: 8px; letter-spacing: 0.72em; fill: var(--orange); }
+.logo__words { flex: none; width: calc(var(--m) * 5.25); height: var(--m); overflow: visible; font-family: var(--sans); font-weight: 600; }
+.logo__words text:first-child { font-size: 17px; letter-spacing: 0.31em; fill: #01263c; }
+.logo__words text:last-child { font-size: 8px; letter-spacing: 0.7em; fill: var(--orange); }
 
 .site-nav ul { display: flex; align-items: center; gap: 2.25rem; margin: 0; padding: 0; list-style: none; }
 .site-nav a:not(.button) { font-size: 0.9375rem; font-weight: 600; color: var(--navy); text-decoration: none; text-underline-offset: 0.4em; }
@@ -220,7 +222,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 .vuca__close { max-width: 24rem; margin-top: 2.25rem; font-size: 1.125rem; }
 .vuca__drivers h3 { margin-bottom: 2rem; font: 400 clamp(1.5rem, 2.5vw, 2.125rem)/1.2 var(--serif); }
 .vuca__drivers ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line-light); }
-.vuca__drivers li { padding: 1.05rem 0; border-bottom: 1px solid var(--line-light); font-size: 1.125rem; font-weight: 500; }
+.vuca__drivers li { padding: 1.05rem 0; border-bottom: 1px solid var(--line-light); font-size: 1.125rem; }
 
 /* ---------- Statement ---------- */
 
@@ -255,13 +257,13 @@ section[id] { scroll-margin-top: 4.5rem; }
 .service { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); padding: 0.75rem 0 3.25rem; }
 .services details[open] .service { animation: rise 0.5s var(--ease); }
 .service__text p { max-width: 35rem; }
-.service__note { font: italic 400 1.5rem/1.3 var(--serif); color: var(--navy); }
+.service__note { font-weight: 600; color: var(--navy); }
 .service__text .service__note { margin-top: 1.75rem; }
 .service__more { margin: 0; }
 dl.service__more { display: grid; gap: 1.05rem; align-content: start; }
 dl.service__more div { padding-top: 1.05rem; border-top: 1px solid var(--line); }
 dl.service__more div:first-child { padding-top: 0; border-top: 0; }
-dl.service__more dt { margin-bottom: 0.2rem; font-weight: 700; color: var(--navy); }
+dl.service__more dt { margin-bottom: 0.2rem; color: var(--navy); }
 dl.service__more dd { margin: 0; font-size: 1rem; line-height: 1.55; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(0.75rem); } }
