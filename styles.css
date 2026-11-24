@@ -96,22 +96,18 @@ section[id] { scroll-margin-top: var(--land); }
 
 /* ---------- Header ---------- */
 
-/* --m is the diameter of the logo's circle: everything in the logo is drawn from it. Registered
-   as a length so the logo can glide from its large size to its compact one. */
-@property --m { syntax: "<length>"; inherits: true; initial-value: 3.1rem; }
-
+/* --m is the diameter of the logo's circle: everything in the logo is drawn from it.
+   The header keeps one size. It only gains its ground and a hairline once the page scrolls: a
+   header that changes size, or blurs what passes under it, makes the first scroll stutter on a phone. */
 .site-header {
-  --m: 3.1rem;
+  --m: 2.75rem;
   position: fixed; inset: 0 0 auto 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-  padding: 1.2rem var(--gutter);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.35s var(--ease), --m 0.35s var(--ease);
+  padding: 0.8rem var(--gutter);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 .site-header.is-solid {
-  --m: 2.5rem;
-  padding-block: 0.65rem;
-  background: rgb(247 245 240 / 0.9);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  background: rgb(247 245 240 / 0.97);
   box-shadow: 0 1px 0 var(--line);
 }
 
@@ -136,8 +132,7 @@ section[id] { scroll-margin-top: var(--land); }
 
 @media (max-width: 55rem) {
   :root { --land: 6.25rem; }
-  .site-header { --m: 2.1rem; padding-block: 1rem; }
-  .site-header.is-solid { --m: 1.9rem; }
+  .site-header { --m: 2.1rem; padding-block: 0.9rem; }
   .menu-button { display: inline-flex; align-items: center; position: relative; z-index: 2; }
   .logo { position: relative; z-index: 2; }
   .site-nav {
@@ -172,6 +167,8 @@ section[id] { scroll-margin-top: var(--land); }
 .mark { --d: clamp(11rem, 24vw, 21rem); position: relative; justify-self: center; width: var(--d); height: calc(var(--d) * 1.165); }
 .mark__sun { position: absolute; left: 0; top: calc(var(--d) * 0.165); width: var(--d); height: var(--d); border-radius: 50%; background: var(--orange); }
 .mark__bar { position: absolute; left: calc(50% - var(--d) * 0.1535); top: 0; width: calc(var(--d) * 0.307); height: calc(var(--d) * 1.152); border-radius: calc(var(--d) * 0.026); background: var(--grey); }
+/* The bar's navy, faded in by main.js as the bar becomes the horizon. */
+.mark__bar i { position: absolute; inset: 0; border-radius: inherit; background: var(--navy); opacity: 0; }
 
 .scene__horizon { --d: clamp(14rem, 32vw, 30rem); grid-column: 1 / -1; position: relative; height: calc(var(--d) * 0.56); margin-top: 5rem; overflow: hidden; }
 .scene__horizon span { position: absolute; left: calc(50% - var(--d) / 2); top: 0; width: var(--d); height: var(--d); border-radius: 50%; background: var(--orange); }
@@ -191,21 +188,24 @@ section[id] { scroll-margin-top: var(--land); }
 
 /* With the scroll piece: the opening holds still while the page scrolls through it, and
    main.js moves the circle and the bar. Everything it moves is transform and opacity. */
-.js-scene .scene { height: 280svh; }
-.js-scene .scene__pin { position: sticky; top: 0; display: block; height: 100svh; max-width: none; padding: 0; overflow: hidden; }
+.js-scene .scene { height: 280svh; background: var(--navy); }
+/* On a phone the address bar slides away during the first scroll and the screen grows taller than
+   this held panel. What shows under it is the scene's navy, the ground under the horizon. */
+.js-scene .scene__pin { position: sticky; top: 0; display: block; height: 100svh; max-width: none; padding: 0; overflow: hidden; background: var(--paper); contain: layout paint; }
 .js-scene .scene__intro { position: absolute; z-index: 2; left: var(--gutter); top: 50%; width: min(54vw, 48rem); translate: 0 -50%; will-change: transform, opacity; }
 .js-scene .scene__quote { position: absolute; z-index: 2; left: 50%; top: 23svh; width: min(92vw, 62rem); margin: 0; translate: -50% 0; }
 .js-scene .scene__quote p, .js-scene .scene__quote figcaption { opacity: 0; will-change: transform, opacity; }
 /* justify-self would shrink an absolutely placed box to its content and centre it: stretch it instead. */
 .js-scene .mark { position: absolute; left: 0; top: 0; width: 100%; height: 100%; justify-self: stretch; visibility: hidden; pointer-events: none; }
 .js-scene.scene-ready .mark { visibility: visible; }
-.js-scene .mark__sun { left: 0; top: 0; width: 100px; height: 100px; transform-origin: 0 0; will-change: transform; }
+.js-scene .mark__sun { left: 0; top: 0; width: 600px; height: 600px; transform-origin: 0 0; will-change: transform; }
 .js-scene .mark__bar { left: 0; top: 0; width: 100px; height: 1000px; border-radius: 8.6px / 23px; transform-origin: 50% 50%; will-change: transform; }
+.js-scene .mark__bar i { will-change: opacity; }
 .js-scene .scene__horizon { display: none; }
 /* First light: the sky near the horizon warms as the sun comes up (main.js fades it in). */
 .scene__dawn { display: none; }
 .js-scene .scene__dawn {
-  display: block; position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none;
+  display: block; position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; will-change: opacity;
   background: radial-gradient(ellipse 78% 62% at 50% 100%, rgb(252 124 4 / 0.2), rgb(252 124 4 / 0.07) 46%, transparent 74%);
 }
 /* When the page opens, the headline and the logo arrive one after the other. */

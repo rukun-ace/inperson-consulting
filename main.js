@@ -80,6 +80,7 @@
   let animated = false;
   let refit = () => {};
   let paintScene = () => {};
+  let progress = () => 0; // how far the page has scrolled through the opening, 0 to 1
 
   if (scene) {
     const pin = scene.querySelector(".scene__pin");
@@ -89,15 +90,16 @@
     const dawn = scene.querySelector(".scene__dawn");
     const sun = scene.querySelector(".mark__sun");
     const bar = scene.querySelector(".mark__bar");
-    const GREY = [102, 102, 102];
-    const NAVY = [1, 43, 106];
+    const barNavy = bar.querySelector("i");
+    // The circle is drawn large and only ever scaled down, so its edge stays crisp at every size.
+    const SUN = 600;
     // The logo's own proportions: the bar is 0.307 of the circle wide and 1.152 tall, its middle
     // sits 0.089 of the circle above the circle's middle, and the whole logo is 1.165 circles tall.
     const BAR_W = 0.307, BAR_H = 1.152, BAR_UP = 0.089, LOGO_H = 1.165;
     let vw = 0, vh = 0, top = 0, range = 1, d0 = 0, d1 = 0, startX = 0, startY = 0;
 
     const still = () => {
-      for (const el of [intro, ...lines, caption, dawn, sun, bar]) el.removeAttribute("style");
+      for (const el of [intro, ...lines, caption, dawn, sun, bar, barNavy]) el.removeAttribute("style");
     };
 
     refit = () => {
@@ -133,8 +135,10 @@
       }
     };
 
-    paintScene = () => {
-      const p = clamp((window.scrollY - top) / range);
+    progress = () => clamp((window.scrollY - top) / range);
+
+    // Everything here is transform and opacity, which the browser can move without redoing the page.
+    paintScene = (p) => {
 
       // The headline leaves.
       const out = ease(span(p, 0.02, 0.2));
@@ -150,8 +154,8 @@
       const bx = lerp(startX, vw / 2, fall);
       const by = lerp(startY - BAR_UP * d0, vh - 2.5, fall);
       bar.style.transform = `translate3d(${bx - 50}px, ${by - 500}px, 0) rotate(${90 * fall}deg) scale(${thick / 100}, ${length / 1000})`;
-      const tint = span(p, 0.3, 0.5);
-      bar.style.backgroundColor = `rgb(${GREY.map((g, i) => Math.round(lerp(g, NAVY[i], tint))).join(" ")})`;
+      // It turns from the logo's grey to navy as it lands: a navy layer fading in over it.
+      barNavy.style.opacity = String(span(p, 0.3, 0.5));
 
       // The circle goes down behind it, then rises over the new horizon as a larger sun.
       const down = ease(span(p, 0.05, 0.46));
@@ -160,7 +164,7 @@
       const d = rising ? d1 : d0;
       const cx = lerp(startX, vw / 2, down);
       const cy = rising ? lerp(vh + d1 / 2 + 24, vh - d1 * 0.1, up) : lerp(startY, vh + d0 / 2 + 24, down);
-      sun.style.transform = `translate3d(${cx - d / 2}px, ${cy - d / 2}px, 0) scale(${d / 100})`;
+      sun.style.transform = `translate3d(${cx - d / 2}px, ${cy - d / 2}px, 0) scale(${d / SUN})`;
       // First light: the sky warms as it comes up.
       dawn.style.opacity = String(up);
 
@@ -179,24 +183,50 @@
     });
   }
 
-  let queued = false;
-  const frame = () => {
-    queued = false;
-    header.classList.toggle("is-solid", window.scrollY > 8);
-    if (animated) paintScene();
+  // The opening does not follow the scroll position itself but one value that glides after it.
+  // A mouse wheel moves the page in steps and a thumb in small jerks: through the glide they
+  // arrive as one even movement. A finger gets a quicker glide, so the page still feels held.
+  const FOLLOW = window.matchMedia("(pointer: coarse)").matches ? 0.3 : 0.16; // share of the way left, per 60 Hz frame
+  let shown = 0, lastTime = 0, running = false;
+  const tick = (now) => {
+    const want = progress();
+    const dt = lastTime ? Math.min(64, now - lastTime) : 16.7;
+    lastTime = now;
+    // The same glide on a 60 Hz and a 120 Hz screen.
+    shown += (want - shown) * (1 - Math.pow(1 - FOLLOW, dt / 16.7));
+    if (Math.abs(want - shown) < 0.0004) shown = want;
+    paintScene(shown);
+    if (shown !== want) requestAnimationFrame(tick);
+    else { running = false; lastTime = 0; }
   };
-  const request = () => {
-    if (!queued) { queued = true; requestAnimationFrame(frame); }
+  const follow = () => {
+    header.classList.toggle("is-solid", window.scrollY > 8);
+    if (animated && !running) { running = true; requestAnimationFrame(tick); }
+  };
+  // After a jump (a reload, a new size), the opening is simply put where the page is.
+  const snap = () => {
+    header.classList.toggle("is-solid", window.scrollY > 8);
+    if (animated) { shown = progress(); paintScene(shown); }
   };
   // The page's measures change while it loads (letters arrive, the opening takes its place): each
   // time, the opening is measured again and the page put back where it belongs.
-  const arrange = () => { refit(); settle(); request(); };
+  const arrange = () => { refit(); settle(); snap(); };
 
   arrange();
-  frame();
   root.classList.add("scene-ready");
-  window.addEventListener("scroll", request, { passive: true });
-  window.addEventListener("resize", () => { refit(); request(); });
+  window.addEventListener("scroll", follow, { passive: true });
+  // A phone's address bar sliding away is a resize too, and it happens in the middle of the first
+  // scroll: measuring is left until the screen has stopped changing, and skipped if only that changed.
+  let resizing = 0, lastWidth = root.clientWidth, lastHeight = window.innerHeight;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizing);
+    resizing = window.setTimeout(() => {
+      const w = root.clientWidth, h = window.innerHeight;
+      const barOnly = w === lastWidth && Math.abs(h - lastHeight) < 160;
+      lastWidth = w; lastHeight = h;
+      if (!barOnly) { refit(); snap(); }
+    }, 160);
+  });
   window.addEventListener("load", arrange);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(arrange);
 
